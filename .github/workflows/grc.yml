@@ -1,0 +1,26 @@
+name: GRC Compliance Automation
+
+on:
+  workflow_dispatch:        # Manual trigger from GitHub UI
+  schedule:
+    - cron: "0 2 * * *"     # Daily at 2 AM
+
+jobs:
+  compliance:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install pywin32
+
+      - name: Run GRC Compliance Pipeline
+        run: |
+          python grc_windows_log_parser.py --limit 5
